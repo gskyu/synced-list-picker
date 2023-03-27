@@ -1,0 +1,46 @@
+﻿@page "/synced-list-picker"
+
+<PageTitle>List Picker</PageTitle>
+
+
+
+<div class="col-md-4 offset-md-4">
+    <h1>List Picker</h1>
+
+    <EditForm EditContext="@AddItemContext" OnSubmit="@AddItem">
+        <div class="input-group">
+            <InputText @bind-Value="ItemToAdd.Name" class="form-group-text col-md-8 rounded-start"></InputText>
+            <button type="submit" class="btn btn-primary col-md-4 rounded-end">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
+                </svg>
+            </button>
+        </div>
+    </EditForm>
+    <div>
+        <button class="btn btn-primary col-md-4" @onclick="@(e => PickRandomItem(true))">Pick Random With Completed</button>
+        <button class="btn btn-primary col-md-4" @onclick="@(e => PickRandomItem(false))">Pick Random Without Completed</button>
+        <div class="col-md-4">@RandomlyChosenOne</div>
+    </div>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col" class="col-md-8">Name</th>
+                <th scope="col" class="col-md-2">Completed</th>
+                <th scope="col" class="col-md-2"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <Virtualize Items="@ItemList" Context="item">
+                    <tr>
+                        <td class="col-md-8">@item.Name</td>
+                        <td class="col-md-2 align-content-center"><input type="checkbox" class="form-check-input" @bind-value="item.Completed"></input></td>
+                        <td class="col-md-2"><button @onclick="@(e => UpdateItem(item.Id))" class="btn btn-primary">Update</button></td>
+                    </tr>
+            </Virtualize>
+        </tbody>
+    </table>
+</div>
+
+
