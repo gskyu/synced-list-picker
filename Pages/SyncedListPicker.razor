@@ -22,7 +22,7 @@
         <div class="input-group-prepend col-md-4">
             <button class="btn btn-outline-primary col-md-12" type="button" @onclick="@(e => PickRandomItem())">Pick Random Item</button>
         </div>
-        <select class="form-select col-md-4" @onchange="OnPickerRangeChanged">
+        <select class="form-select col-md-4" @onchange="OnPickerCriteriaChanged">
             <option selected value="true">Include Completed</option>
             <option value="false">Exlude Completed</option>
         </select>

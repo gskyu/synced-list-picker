@@ -42,7 +42,7 @@ public partial class SyncedListPicker : ComponentBase
         RandomlyChosenOne = eligibleChoices?[rnd.Next(0, eligibleChoices.Count())].Name ?? NA;
     }
 
-    protected void OnPickerRangeChanged(ChangeEventArgs e)
+    protected void OnPickerCriteriaChanged(ChangeEventArgs e)
     {
         IncludeCompletedItems = bool.Parse(e.Value?.ToString() ?? "true");
     }
