@@ -41,7 +41,7 @@ public partial class SyncedListPicker : ComponentBase
     protected void PickRandomItem(bool completedIncluded)
     {
         var rnd = new Random(DateTime.UtcNow.Millisecond);
-        RandomlyChosenOne = (completedIncluded ? ItemList : ItemList.Where(i => !i.Completed)?.ToList())??
+        RandomlyChosenOne = (completedIncluded ? ItemList : ItemList.Where(i => !i.Completed)?.ToList())?
             [rnd.Next(0, ItemList.Count - 1)].Name ?? "N/A";
     }
 
