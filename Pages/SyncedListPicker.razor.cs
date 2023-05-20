@@ -1,7 +1,6 @@
 ﻿using Gskyu.SyncedListPicker.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using System.Text.Json;
 
 namespace Gskyu.SyncedListPicker.Pages;
 
