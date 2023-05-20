@@ -1,6 +1,7 @@
 ﻿using Gskyu.SyncedListPicker.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using System.Text.Json;
 
 namespace Gskyu.SyncedListPicker.Pages;
 
@@ -12,25 +13,22 @@ public partial class SyncedListPicker : ComponentBase
     protected Item ItemToAdd { get; set; }
 
     protected string RandomlyChosenOne { get; set; }
+    private bool IncludeCompletedItems { get; set; }
+    private const string NA = "N/A";
 
     public SyncedListPicker()
     {
-        ItemToAdd = new Item { Id = Guid.NewGuid().ToString() };
+        ItemToAdd = new Item(Guid.NewGuid().ToString(), string.Empty);
         AddItemContext = new EditContext(ItemToAdd);
 
         ItemList ??= new List<Item>();
-
-        RandomlyChosenOne = string.Empty;
+        RandomlyChosenOne = NA;
+        IncludeCompletedItems = true;
     }
 
     protected void AddItem()
     {
-        ItemList.Add(new Item
-        {
-            Id = Guid.NewGuid().ToString(),
-            Name = ItemToAdd.Name,
-            Completed = false
-        });
+        ItemList.Add(new Item(Guid.NewGuid().ToString(), ItemToAdd.Name));
     }
 
     protected void UpdateItem(string id)
@@ -38,11 +36,16 @@ public partial class SyncedListPicker : ComponentBase
         Console.WriteLine("called update");
     }
 
-    protected void PickRandomItem(bool completedIncluded)
+    protected void PickRandomItem()
     {
         var rnd = new Random(DateTime.UtcNow.Millisecond);
-        RandomlyChosenOne = (completedIncluded ? ItemList : ItemList.Where(i => !i.Completed)?.ToList())?
-            [rnd.Next(0, ItemList.Count - 1)].Name ?? "N/A";
+        var eligibleChoices = IncludeCompletedItems ? ItemList : ItemList.Where(i => !i.Completed)?.ToList();
+        RandomlyChosenOne = eligibleChoices?[rnd.Next(0, eligibleChoices.Count())].Name ?? NA;
+    }
+
+    protected void OnPickerRangeChanged(ChangeEventArgs e)
+    {
+        IncludeCompletedItems = bool.Parse(e.Value?.ToString() ?? "true");
     }
 
     protected override Task OnInitializedAsync()
